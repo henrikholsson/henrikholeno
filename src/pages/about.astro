@@ -1,0 +1,277 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="About Me">
+  <div class="about">
+    <div class="profile">
+      <div class="profile-content">
+        <h1>Henrik Hole</h1>
+        <p class="title">Software Developer</p>
+        <p class="email">hei@henrikhole.no</p>
+        <p class="bio">
+          Passionate backend-developer with team of AI frontend developers focused on creating clean, user-friendly solutions. 
+          With a keen eye for detail and a love for minimalist design, We build applications 
+          that are both beautiful and functional.
+        </br>
+      </br>
+        Love hiking and camping in the mountains alongside my faithful dog Dora the white swiss shepherd.
+        </br>
+      </br>
+          Currently employed at <a href="https://www.minus1.no" target="_blank" rel="noopener noreferrer">Minus 1</a> as a Senior Consultant.
+        </p>
+        
+      </div>
+      <div class="profile-image">
+        <img src="/images/profile.jpg" alt="Profile picture" />
+      </div>
+    </div>
+
+    <section class="skills">
+      <h2>Skills</h2>
+      <div class="skill-tags">
+        <span class="tag">.NET</span>
+        <span class="tag">C#</span>
+        <span class="tag">EntityFramework</span>
+        <span class="tag">Dapper</span>
+        <span class="tag">SQL</span>
+        <span class="tag">Docker</span>
+        <span class="tag">Kubernetes</span>
+        <span class="tag">Azure</span>
+        <span class="tag">Dynamics 365</span>
+        <span class="tag">TypeScript</span>
+        <span class="tag">React</span>
+        <span class="tag">Node.js</span>
+        <span class="tag">Astro</span>
+        <span class="tag">Linux</span>
+        <span class="tag">Windows</span>
+        <span class="tag">Git</span>
+        <span class="tag">Electronics</span>
+      </div>
+    </section>
+
+    <section class="interests">
+      <h2>Interests</h2>
+      <div class="interest-categories">
+        <div class="interest-category">
+          <h3>Technology</h3>
+          <div class="interest-tags">
+            <span class="tag">AI & Machine Learning</span>
+            <span class="tag">Cloud Architecture</span>
+            <span class="tag">Selfhosting</span>
+            <span class="tag">Clean Code</span>
+          </div>
+        </div>
+        <div class="interest-category">
+          <h3>Personal</h3>
+          <div class="interest-tags">
+            <span class="tag">Fancy wines</span>
+            <span class="tag">Travel</span>
+            <span class="tag">Reading</span>
+            <span class="tag">Running</span>
+            <span class="tag">Weightlifting</span>
+            <span class="tag">Meditation</span>
+            <span class="tag">Gaming</span>
+            <span class="tag">My dog</span>
+            <span class="tag">Graphic Nnvels</span>
+            <span class="tag">Outdoors</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact">
+      <h2>Get in Touch</h2>
+      <div class="contact-links">
+        <a href="https://github.com/henrikholsson" target="_blank" rel="noopener noreferrer">
+          <img class="light-mode-img" src="/images/socials/github-mark.svg" alt="GitHub"/>
+          <img class="dark-mode-img" src="/images/socials/github-mark-white.svg" alt="GitHub"/>
+        </a>
+        <a href="https://no.linkedin.com/in/henrikholsson" target="_blank" rel="noopener noreferrer">
+          <img class="light-mode-img" src="/images/socials/InBug-Black.png" alt="LinkedIn"/>
+          <img class="dark-mode-img" src="/images/socials/InBug-White.png" alt="LinkedIn"/>
+        </a>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .about {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 5%;
+  }
+
+  .profile {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 3rem;
+    align-items: stretch;
+    margin-bottom: 4rem;
+  }
+
+  .profile-image {
+    flex: 0 0 auto;
+    width: 300px;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .profile-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.2;
+  }
+
+  .title {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .email {
+    font-size: 1.25rem;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+  }
+
+  .bio {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-main);
+  }
+
+  section {
+    margin-top: 3rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .tag {
+    background: var(--bg-muted);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: var(--text-main);
+  }
+
+  .interest-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .interest-category {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .interest-category h3 {
+    font-size: 1.2rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .interest-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .contact-links {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .contact-links a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.2s ease;
+  }
+
+  .contact-links a:hover {
+    color: var(--accent-light);
+  }
+
+  .contact-links img {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Dark mode image handling */
+  .dark-mode-img {
+    display: none;
+  }
+
+  :root[data-theme="dark"] .dark-mode-img {
+    display: block;
+  }
+
+  :root[data-theme="dark"] .light-mode-img {
+    display: none;
+  }
+
+  :root[data-theme="light"] .dark-mode-img {
+    display: none;
+  }
+
+  :root[data-theme="light"] .light-mode-img {
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .profile {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 2rem;
+    }
+
+    .profile-image {
+      width: 180px;
+      height: 180px;
+      position: static;
+    }
+
+    .profile-image img {
+      position: static;
+    }
+
+    .contact-links {
+      justify-content: center;
+    }
+
+    .interest-categories {
+      grid-template-columns: 1fr;
+    }
+  }
+</style> 

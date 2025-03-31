@@ -1,0 +1,209 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+
+// Get all posts and filter for published ones
+const posts = await getCollection('posts');
+const publishedPosts = posts.filter(post => post.data.published);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/images/logo.png" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>{title}</title>
+    <script>
+      // Check for saved theme preference or system preference
+      const getTheme = () => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      };
+
+      // Apply theme
+      const setTheme = (theme: 'dark' | 'light') => {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        // Update logo based on theme
+        const logo = document.querySelector('.logo img') as HTMLImageElement;
+        if (logo) {
+          logo.src = theme === 'dark' ? '/images/logowhite.png' : '/images/logo.png';
+        }
+      };
+
+      // Initialize theme
+      setTheme(getTheme() as 'dark' | 'light');
+
+      // Handle system theme changes
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) { // Only if no manual preference is set
+          setTheme(e.matches ? 'dark' : 'light');
+        }
+      });
+
+      // Make functions available globally
+      declare global {
+        interface Window {
+          themeToggle: () => void;
+        }
+      }
+      
+      window.themeToggle = () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+      };
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">
+          <a href="/" onclick="themeToggle(); return false;">
+            <img src="/images/logo.png" alt="Logo" />
+          </a>
+        </div>
+        <div class="nav-links">
+          <a href="/about">About</a>
+          {publishedPosts.length > 0 && <a href="/posts">Posts</a>}
+        </div>
+      </nav>
+      <button id="theme-toggle" aria-label="Toggle theme">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <style is:global>
+      :root {
+        --accent: rgb(17, 17, 17);
+        --accent-light: rgb(35, 35, 35);
+        --text-main: rgb(51, 51, 51);
+        --text-muted: rgb(102, 102, 102);
+        --bg-main: rgb(252, 252, 250);
+        --bg-muted: rgb(247, 247, 245);
+        --border-color: rgb(238, 238, 236);
+      }
+
+      :root[data-theme="dark"] {
+        --accent: rgb(230, 230, 230);
+        --accent-light: rgb(200, 200, 200);
+        --text-main: rgb(230, 230, 230);
+        --text-muted: rgb(179, 179, 179);
+        --bg-main: rgb(28, 28, 30);
+        --bg-muted: rgb(44, 44, 46);
+        --border-color: rgb(48, 48, 50);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: var(--bg-main);
+        color: var(--text-main);
+        font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        line-height: 1.6;
+      }
+
+      header {
+       
+        background: var(--bg-main);
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo img {
+        height: 80px;
+        width: auto;
+        transition: transform 0.2s ease;
+      }
+
+      .logo a:hover img {
+        transform: scale(1.05);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text-main);
+        font-size: 1.1rem;
+        transition: color 0.2s ease;
+      }
+
+      .nav-links a:hover {
+        color: var(--accent-light);
+      }
+
+      main {
+        flex: 1;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 5%;
+      }
+
+      /* Smooth theme transition */
+      html {
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      /* Transition for other elements */
+      * {
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      }
+    </style>
+  </body>
+</html> 

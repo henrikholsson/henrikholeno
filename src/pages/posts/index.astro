@@ -1,0 +1,133 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+const posts = await getCollection('posts');
+// Filter for published posts and sort by date
+const publishedPosts = posts
+  .filter((post: CollectionEntry<'posts'>) => post.data.published)
+  .sort((a: CollectionEntry<'posts'>, b: CollectionEntry<'posts'>) => 
+    new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  );
+
+// Redirect to about page if there are no published posts
+if (publishedPosts.length === 0) {
+  return Astro.redirect('/about');
+}
+---
+
+<Layout title="Blog Posts">
+  <div class="posts-container">
+    <h1>Latest Posts</h1>
+    <div class="posts-grid">
+      {publishedPosts.map((post: CollectionEntry<'posts'>) => (
+        <a href={`/posts/${post.slug}`} class="post-link">
+          <article class="post-card">
+            <div class="content">
+              <h2>{post.data.title}</h2>
+              <div class="post-meta">
+                <p class="author">By {post.data.author}</p>
+                <p class="date">{new Date(post.data.date).toLocaleDateString()}</p>
+              </div>
+              <p class="description">{post.data.description}</p>
+            </div>
+          </article>
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .posts-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 5%;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 3rem;
+    color: var(--accent);
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .post-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+  }
+
+  .post-link:visited {
+    color: inherit;
+  }
+
+  .post-card {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    overflow: hidden;
+    background: var(--bg-main);
+  }
+
+  .post-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+
+  .post-meta {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .author {
+    color: var(--text-main);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .date {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    position: relative;
+    padding-left: 1rem;
+  }
+
+  .date::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--text-muted);
+  }
+
+  .description {
+    color: var(--text-main);
+    line-height: 1.6;
+    flex-grow: 1;
+  }
+</style> 
